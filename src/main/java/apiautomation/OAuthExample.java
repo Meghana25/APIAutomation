@@ -3,6 +3,13 @@ package apiautomation;
 import files.reusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
+import org.testng.Assert;
+import pojo.GetCourse;
+import pojo.WebAutomation;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import static io.restassured.RestAssured.given;
 
@@ -22,10 +29,32 @@ public class OAuthExample {
     }
     public static void getCourseDetails(String access_token)
     {
-        String response = given().queryParam("access_token",access_token)
+        GetCourse getCourse = given().queryParam("access_token",access_token)
                 .when().log().all().get("https://rahulshettyacademy.com/oauthapi/getCourseDetails")
-                .asString();
-        System.out.println(response);
+                        .as(GetCourse.class);
+        System.out.println(getCourse.getLinkedIn());
+        System.out.println(getCourse.getInstructor());
+        int size = getCourse.getCourses().getApi().size();
+        for(int i=0;i<size;i++)
+        {
+            if(getCourse.getCourses().getApi().get(i).getCourseTitle().contains("SoapUI"))
+            {
+                System.out.println(getCourse.getCourses().getApi().get(i).getPrice());
+            }
+        }
+
+        String[] courses = {"Selenium Webdriver Java","Cypress","Protractor"};
+        ArrayList<String> courseTitles = new ArrayList<>();
+
+        List<WebAutomation> webAutomations = getCourse.getCourses().getWebAutomation();
+        for(int i=0;i<webAutomations.size();i++)
+        {
+            courseTitles.add(webAutomations.get(i).getCourseTitle());
+        }
+        List<String> expectedList = Arrays.asList(courses);
+        Assert.assertEquals(courseTitles,expectedList);
+
+
     }
 
 }
