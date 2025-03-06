@@ -1,11 +1,11 @@
-package apiautomation;
+package deserialization;
 
 import files.reusableMethods;
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import org.testng.Assert;
-import pojo.GetCourse;
-import pojo.WebAutomation;
+import deserialization.pojo.GetCourse;
+import deserialization.pojo.WebAutomation;
 
 import java.util.ArrayList;
 import java.util.Arrays;
